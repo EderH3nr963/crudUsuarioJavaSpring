@@ -91,7 +91,6 @@ Ele marca meu primeiro contato prático com:
 ## 📌 Próximos passos (roadmap)
 
 - Implementar autenticação com JWT
-- Melhorar o tratamento global de erros (`@ControllerAdvice`)
 - Criar testes unitários
 - Adicionar paginação
 - Documentar a API com Swagger/OpenAPI
