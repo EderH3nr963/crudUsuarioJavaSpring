@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
+
 @RestControllerAdvice
 public class GlobalDefaultExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
@@ -18,6 +20,17 @@ public class GlobalDefaultExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiErrorDTO> handlerAuthenticationException( Exception ex ) {
+        ApiErrorDTO error = new ApiErrorDTO(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Unauthorized Error",
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(Exception.class)

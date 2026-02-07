@@ -1,8 +1,7 @@
-package com.crudUser.demo.model;
+package com.crudUser.demo.model.Usuario;
 
 import jakarta.persistence.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +12,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false, unique = true)
@@ -21,6 +20,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String hashPassword;
+
+    @Column(nullable = false)
+    private UsuarioRole role;
 
     @Transient
     private String password;
@@ -37,6 +39,9 @@ public class Usuario {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public UsuarioRole getRole() { return role; }
+    public void setRole(UsuarioRole role) { this.role = role; }
 
     public void setHashPassword(String hashPassword) { this.hashPassword = hashPassword; }
 }

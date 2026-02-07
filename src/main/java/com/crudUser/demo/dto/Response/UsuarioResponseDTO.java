@@ -1,6 +1,6 @@
 package com.crudUser.demo.dto.Response;
 
-import com.crudUser.demo.model.Usuario;
+import com.crudUser.demo.model.Usuario.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

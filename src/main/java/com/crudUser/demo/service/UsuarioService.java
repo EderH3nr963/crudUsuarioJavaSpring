@@ -1,14 +1,12 @@
 package com.crudUser.demo.service;
 
-import com.crudUser.demo.model.Usuario;
+import com.crudUser.demo.model.Usuario.Usuario;
 import com.crudUser.demo.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.hibernate.annotations.NotFound;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

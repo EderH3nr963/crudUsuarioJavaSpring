@@ -2,7 +2,7 @@ package com.crudUser.demo.controller;
 
 import com.crudUser.demo.dto.Request.*;
 import com.crudUser.demo.dto.Response.UsuarioResponseDTO;
-import com.crudUser.demo.model.Usuario;
+import com.crudUser.demo.model.Usuario.Usuario;
 import com.crudUser.demo.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
