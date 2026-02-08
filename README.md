@@ -90,7 +90,6 @@ Ele marca meu primeiro contato prático com:
 
 ## 📌 Próximos passos (roadmap)
 
-- Implementar autenticação com JWT
 - Criar testes unitários
 - Adicionar paginação
 - Documentar a API com Swagger/OpenAPI

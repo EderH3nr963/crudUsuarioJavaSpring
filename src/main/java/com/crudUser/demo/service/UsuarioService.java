@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 @Service
@@ -52,6 +54,10 @@ public class UsuarioService {
     public Usuario read(UUID id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+    }
+
+    public Collection<Usuario> readAll() {
+        return usuarioRepository.findAll();
     }
 
     @Transactional

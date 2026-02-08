@@ -9,21 +9,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public class UsuarioDetailsImpl implements UserDetails {
-    private final Usuario usuario;
+    private Usuario usuario;
 
     public UsuarioDetailsImpl(Usuario usuario) {
         this.usuario = usuario;
     }
 
+
     @Override
-    public boolean isEnabled() {
-        return true;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (usuario.getRole() == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public String getPassword() {
+        return usuario.getHashPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return usuario.getUsername();
+    }
+
+    public UUID getId() {
+        return usuario.getId();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
         return true;
     }
 
@@ -33,23 +50,12 @@ public class UsuarioDetailsImpl implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    public String getUsername() {
-        return usuario.getEmail();
-    }
-
-    @Override
-    public @Nullable String getPassword() {
-        return usuario.getPassword();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(usuario.getRole() == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
-        else return List.of(new SimpleGrantedAuthority("USER"));
+    public boolean isEnabled() {
+        return true;
     }
 }

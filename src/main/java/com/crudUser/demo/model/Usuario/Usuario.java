@@ -18,11 +18,12 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="hash_password")
     private String hashPassword;
 
     @Column(nullable = false)
-    private UsuarioRole role;
+    @Enumerated(EnumType.STRING)
+    private UsuarioRole role = UsuarioRole.USER;
 
     @Transient
     private String password;
@@ -44,4 +45,5 @@ public class Usuario {
     public void setRole(UsuarioRole role) { this.role = role; }
 
     public void setHashPassword(String hashPassword) { this.hashPassword = hashPassword; }
+    public String getHashPassword() { return this.hashPassword; }
 }

@@ -2,7 +2,6 @@ package com.crudUser.demo.security;
 
 import com.crudUser.demo.model.Usuario.Usuario;
 import com.crudUser.demo.repository.UsuarioRepository;
-import com.crudUser.demo.service.TokenService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,15 +15,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    private TokenService tokenService;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private TokenService tokenService;
 
     @Override
     protected void doFilterInternal(
@@ -32,32 +33,32 @@ public class SecurityFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-
-        String token = recoverToken(request);
-
+        var token = this.recoverToken(request);
         if (token != null) {
             String login = tokenService.validateToken(token);
 
-            Usuario usuario = usuarioRepository.findByEmail(login)
-                    .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+            Optional<Usuario> usuarioOpt =
+                    usuarioRepository.findById(UUID.fromString(login));
 
-            UserDetails userDetails = new UsuarioDetailsImpl(usuario);
+            if (usuarioOpt.isPresent()) {
+                UsuarioDetailsImpl usuarioDetails =
+                        new UsuarioDetailsImpl(usuarioOpt.get());
 
-            var authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        usuarioDetails,
+                        null,
+                        usuarioDetails.getAuthorities()
+                );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
-
         filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+        var authHeader = request.getHeader("Authorization");
+        if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
 }

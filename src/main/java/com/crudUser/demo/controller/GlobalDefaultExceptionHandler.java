@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.naming.AuthenticationException;
 
@@ -40,6 +41,8 @@ public class GlobalDefaultExceptionHandler {
                 "Internal Server Error",
                 "Erro interno no servidor"
         );
+
+        System.out.println(ex);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
